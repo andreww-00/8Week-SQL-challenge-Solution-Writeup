@@ -138,12 +138,54 @@ Limit 1;
 
 ```
 
-Output:
+## Output:
 
 |Food | Amount|
 |---------|------------|
 |Ramen       | 8          |
 
-Explaination: 
+### Explaination: 
 
 Find the amount of product sold using count. Joining this to the menu on product_id allows you to group by the products name. This then shows a list of the amount of products sold. Ordering this so that the most sold is at the top using DESC and limit it to 1 result. 
+
+### Question #5:
+
+**Which item was the most popular for each customer?**
+
+```SQL
+
+WITH favs as (
+SELECT 
+menu.product_name,
+sales.customer_id,
+COUNT(sales.product_id) as Amount_Sold,
+DENSE_RANK() OVER(PARTITION BY sales.customer_id ORDER BY COUNT(sales.customer_id) DESC) as SCORE
+FROM sales
+JOIN menu ON sales.product_id = menu.product_id 
+GROUP BY sales.customer_id, menu.product_name
+ORDER BY SCORE
+)
+
+SELECT 
+favs.customer_id as Customer, 
+favs.product_name as Fav_Food, 
+favs.Amount_Sold
+FROM favs
+WHERE SCORE = 1
+ORDER BY customer_id;
+
+```
+
+### Output:
+
+|Customer | Fav_Food | Amount_Sold |
+|---------|------------|---------------|
+|A        | ramen        | 3
+|B       | curry          |2
+|B        | sushi      |2
+|B        | ramen     |2
+|C        |ramen         |3
+
+### Explaination: 
+
+This was another difficult problem for me. The problem boils down to making a subquery which DENSE_RANKS each customer based on the amount of times their ID shows up in the list. Using DESC this means that a dense rank of 1 is a customers favorite food and is retruned along with the food and amunt of it sold to what customer.
