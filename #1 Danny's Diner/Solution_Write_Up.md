@@ -323,3 +323,44 @@ GROUP BY item_points.customer_id;
 |B    | 940       |
 |C   | 360     |
 
+## Explaination:
+
+Set up a CASE and WHEN ELSE to account for the 2X mulitplier 
+
+## Question #10: **In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?**
+Important note on original read through of this question I'd assumed that sushi would not get the 2x mulitplier after the week.
+```SQL
+
+WITH item_points AS (
+SELECT s.customer_id,
+m.price,
+CASE 
+	WHEN ABS(s.order_date - mem.join_date) <= 7 THEN m.price * 20 
+    ELSE m.price * 10
+END as Points,
+s.order_date,
+mem.join_date
+FROM sales AS s
+JOIN menu AS m on s.product_id = m.product_id
+JOIN members AS mem ON s.customer_id = mem.customer_id
+WHERE s.order_date > 2021-02-01
+)
+
+SELECT item_points.customer_id AS Customer,
+SUM(item_points.Points)
+FROM item_points 
+GROUP BY Customer
+ORDER BY Customer;
+
+```
+
+## Output:
+
+|Customer | Points|
+|---------|------------|
+|A     | 1520      |
+|B    | 1210      |
+
+## Explaination:
+
+Similar to above just with different logic, if you wanted to correct for the 2X sushi mulitplier overall you would need an embeded CASE for the WHEN statement. 
