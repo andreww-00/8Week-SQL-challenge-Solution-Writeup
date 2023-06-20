@@ -264,3 +264,62 @@ WHERE score = 1;
 ## Explaination:
 
 This is effectively the same as question 6 except the inequality is changed to be less than the join date, and the RANk is done from DESC date.
+
+## Question #8: **What is the total items and amount spent for each member before they became a member?**
+
+```SQL
+
+SELECT sales.customer_id AS Customer,
+COUNT(sales.order_date) AS Total_Sales_Before,
+SUM(menu.price) AS Amount_Spent_Before
+FROM sales
+JOIN menu on sales.product_id = menu.product_id
+JOIN members on sales.customer_id = members.customer_id
+WHERE sales.order_date < members.join_date
+GROUP BY Customer
+ORDER BY Customer; 
+
+```
+## Output:
+
+|Customer | Total_Sales | Amount_Spent |
+|---------|------------|---------------|
+|A        | 2       | 25
+|B       | 3         |40
+
+## Explaination:
+
+Nothing too fancy for this one. Find the COUNT and SUM and group them by the customer all while the order date is less than the join date
+
+
+## Question #9: **If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?**
+
+```SQL
+
+WITH item_points AS (
+SELECT s.customer_id, 
+m.product_name,
+m.price,
+CASE
+	WHEN m.product_name = 'sushi' THEN m.price * 20
+	ELSE m.price * 10
+END AS points
+FROM sales AS s 
+JOIN menu AS m on s.product_id = m.product_id
+)
+
+SELECT item_points.customer_id AS Customer,
+SUM(item_points.points) AS Total_Points
+FROM item_points
+GROUP BY item_points.customer_id;
+
+```
+
+## Output:
+
+|Customer | Total Points|
+|---------|------------|
+|A     |860       |
+|B    | 940       |
+|C   | 360     |
+
