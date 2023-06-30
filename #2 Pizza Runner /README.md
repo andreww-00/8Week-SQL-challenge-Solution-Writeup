@@ -1,13 +1,13 @@
-### Pizza Runner write up 
+## Pizza Runner write up 
 
-## Introduction and Problem Statement:  
+### Introduction and Problem Statement:  
 (Summaries of introduction and Problem from [Case Study # 2](https://8weeksqlchallenge.com/case-study-1/))
 
 - Danny created a business idea that combines Uber and Pizza called pizza runner
 
 - Danny wants to use his data to best determine the scheduling of his runners
 
-## Data:
+### Data:
 Danny supplied 6 different tables - some of which need cleaning. These tables are best summarized in the following entity relationship diagram. 
 
 
@@ -134,7 +134,7 @@ MODIFY COLUMN duration INT;
 
 ```
 
-Running this three queries fixes all the problems discussed above and following is the corrected table
+Running these three queries fixes all the problems discussed above and following is the corrected table
 
 
 | order_id | runner_id | pickup_time         | distance | duration | cancellation          |
@@ -161,7 +161,7 @@ Now the data is ready to reveal its insights!
 SELECT COUNT(*) as amount_of_orders FROM customer_orders_cleaned;
 ```
 
-###Output:
+### Output:
 
 |amount_of_orders|
 |------|
@@ -178,7 +178,7 @@ FROM customer_orders_cleaned;
 
 ```
 
-###Output:
+### Output:
 
 |unique_orders|
 |------|
@@ -200,7 +200,7 @@ GROUP BY runner_id;
 
 ```
 
-###Output:
+### Output:
 
 |Runner| amount_delivered |
 |------|-------|
@@ -209,8 +209,8 @@ GROUP BY runner_id;
 |3| 1  |
 
 ### Explanation
-Use Count and group by runner_id to find the amount of orders each runner took
-Set a where to show which cancellation values were NULL to show successful orders.
+1. Use Count and group by runner_id to find the amount of orders each runner took
+2. Set a where to show which cancellation values were NULL to show successful orders.
 
 
 ### Question 4: How many of each type of pizza was delivered?
@@ -228,7 +228,7 @@ ORDER BY amount ASC;
 
 ```
 
-###Output:
+### Output:
 
 |pizza_name| amount |
 |------|-------|
@@ -236,9 +236,9 @@ ORDER BY amount ASC;
 |Meatlovers| 9  |
 
 ### Explanation
-JOIN on order_id and then by pizza_id to show the pizza names
-COUNT the pizzas and group them their name
-Don’t forget where IS NULL to show only successful deliveries
+1. JOIN on order_id and then by pizza_id to show the pizza names
+2. COUNT the pizzas and group them their name
+3. Don’t forget where IS NULL to show only successful deliveries
 
 ### Question 5: How many Vegetarian and Meatlovers were ordered by each customer?
 
@@ -270,8 +270,8 @@ order by customer_id;
 
 
 ### Explanation
-Join customer_orders to runner_orders to pizza_names to show the type of pizza that was ordered
-COUNT customer_id and then group by customer_id and pizza_type
+1. Join customer_orders to runner_orders to pizza_names to show the type of pizza that was ordered
+2. COUNT customer_id and then group by customer_id and pizza_type
 
 ### Question 6: What was the maximum number of pizzas delivered in a single order?
 
@@ -300,9 +300,9 @@ FROM amount_per_order;
 
 ### Explanation
 
-Create a CTE which lists the counts of each customers order
-Join onto the runner_orders table to be able to filter out canceled orders
-Call CTE again to find the max number of pizzas in a given order. 
+1. Create a CTE which lists the counts of each customers order
+2. Join onto the runner_orders table to be able to filter out canceled orders
+3. Call CTE again to find the max number of pizzas in a given order. 
 
 ### Question 7: For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
 
@@ -347,9 +347,9 @@ ORDER BY customer_id;
 
 ### Explanation
 
-Create a CTE which generates a table showing which orders have changes and no changes using CASE statements.
-Call the CTE and run SUM grouping by customer ID to show which customers had an amount of orders with or without changes. 
-NOTE: CTE is not required here but helps to clean the code up, having the SUM statements on top of the CASE ruins readability in my opinion.  
+1. Create a CTE which generates a table showing which orders have changes and no changes using CASE statements.
+2. Call the CTE and run SUM grouping by customer ID to show which customers had an amount of orders with or without changes. 
+3. NOTE: CTE is not required here but helps to clean the code up, having the SUM statements on top of the CASE ruins readability in my opinion.  
 
 ### Question 8: How many pizzas were delivered that had both exclusions and extras?
 
@@ -373,9 +373,9 @@ WHERE cancellation IS NULL;
 
 ### Explanation
 
-Join customer_orders onto runner_orders, WHERE cancellation IS NULL to find the orders that actually got delivered. 
-Set up case statement to determine which orders have both extras and exclusions
-Add SUM to case statement to find amount of orders with extras and exclusions
+1. Join customer_orders onto runner_orders, WHERE cancellation IS NULL to find the orders that actually got delivered. 
+2. Set up case statement to determine which orders have both extras and exclusions
+3. Add SUM to case statement to find amount of orders with extras and exclusions
 
 ### Question 9: What was the total volume of pizzas ordered for each hour of the day?
 
@@ -401,8 +401,8 @@ ORDER BY hours;
 | 23   | 3              |
 
 ### Explanation 
-Use hours function to return the hour of each order
-Do this again but count the hours GROUPING BY hours to show volume per hour
+1. Use hours function to return the hour of each order
+2. Do this again but count the hours GROUPING BY hours to show volume per hour
 
 
 ### Question 10: What was the volume of orders for each day of the week?
@@ -455,8 +455,8 @@ GROUP BY weeks;
 
 
 ### Explanation
-Use the week function to return the value of which week the runner is signed up
-Use COUNT DISTINCT and group by weeks to show the amount of runners signed up per week.
+1. Use the week function to return the value of which week the runner is signed up
+2. Use COUNT DISTINCT and group by weeks to show the amount of runners signed up per week.
 
 ### Question 2: What was the average time in minutes it took for each runner to arrive at the Pizza Runner HQ to pick up the order?
 
@@ -487,9 +487,9 @@ GROUP BY runner;
 
 
 ### Explanation
-Create a CTE that uses the TIMEDIFF function to return the time taken to pick up an order.
-SELECT the AVG time difference from the CTE grouping by runner_id
-In this case the avg defaulted to seconds, dividing the value by 60 will reveal minutes.
+1. Create a CTE that uses the TIMEDIFF function to return the time taken to pick up an order.
+2. SELECT the AVG time difference from the CTE grouping by runner_id
+3. In this case the avg defaulted to seconds, dividing the value by 60 will reveal minutes.
 
 ### Question 3: Is there any relationship between the number of pizzas and how long the order takes to prepare?
 
@@ -524,11 +524,11 @@ GROUP BY pizzas_in_order;
 | 3               | 48.61666667         |
 
 
-### Explanation
-COUNT order_id GROUPING BY both order_time and pickup_time. This returns a table with the amount of pizzas in the order
-Use TIMEDIFF on order_time and pick_up time to return the time to prepare the order
-Turn that table into a CTE and call it using the AVG function to find the average time to prepare for the amount of pizzas
-As shown, the more pizzas in an order the longer the prep time takes.
+### Explanatio
+1. COUNT order_id GROUPING BY both order_time and pickup_time. This returns a table with the amount of pizzas in the order
+2. Use TIMEDIFF on order_time and pick_up time to return the time to prepare the order
+3. Turn that table into a CTE and call it using the AVG function to find the average time to prepare for the amount of pizzas
+4. As shown, the more pizzas in an order the longer the prep time takes.
 
 ### Question 4. What was the average distance traveled for each customer?
 
@@ -555,9 +555,9 @@ GROUP BY customer_id;
 
 
 ### Explanation
-JOIN customer_order to runner_orders to access both customer_id and distance attributes
-Use AVG function on distance and group by customer_id 
-USE WHERE to filter out the canceled orders. 
+1. JOIN customer_order to runner_orders to access both customer_id and distance attributes
+2. Use AVG function on distance and group by customer_id 
+3. USE WHERE to filter out the canceled orders. 
 
 
 ### Question 5: What was the difference between the longest and shortest delivery times for all orders?
@@ -578,8 +578,8 @@ WHERE cancellation IS NULL;
 
 ### Explanation
 
-Using MAX and MIN function and subtract those values in a single select statement
-Add the normal WHERE clause to extract non canceled orders
+1. Using MAX and MIN function and subtract those values in a single select statement
+2. Add the normal WHERE clause to extract non canceled orders
 
 
 ### Question 6: What was the average speed for each runner for each delivery and do you notice any trend for these values?
@@ -615,10 +615,10 @@ ORDER BY times;
 
 
 ### Explanation
-Speed is equal to distance/time, converting time to hours so the units are more readable.
-Take the average of that speed and group by runner_id and order_id
-I was curious to explore if the time of day had any impact on the average speed of the drivers. I used HOUR and ORDERED it to see.
-Doing this you can see a loose correlation that the drivers drive faster at night then they do midday, 
+1. Speed is equal to distance/time, converting time to hours so the units are more readable.
+2. Take the average of that speed and group by runner_id and order_id
+3. I was curious to explore if the time of day had any impact on the average speed of the drivers. I used HOUR and ORDERED it to see.
+4. Doing this you can see a loose correlation that the drivers drive faster at night then they do midday, 
  
 
 ### Question 7: What is the successful delivery percentage for each runner?
@@ -644,9 +644,9 @@ GROUP BY runner_id;
 
 
 ### Explanation
-Create a Sum case statement which adds up all orders that aren't canceled. 
-Divide this by COUNT(*) and multiply it all by 100 to get percent.
-GROUP BY runner_id to show per runner. 
+1. Create a Sum case statement which adds up all orders that aren't canceled. 
+2. Divide this by COUNT(*) and multiply it all by 100 to get percent.
+3. GROUP BY runner_id to show per runner. 
 
 
 
