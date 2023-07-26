@@ -6,3 +6,5 @@ The Challenge is broken down into 8 distinct case studies each with unique quest
 
 # The Case Studies
 - [#1 Danny's Diner](https://github.com/andreww-00/8Week-SQL-challenge-Solution-Writeup/tree/main/%231%20Danny's%20Diner)
+- [#2 Pizza Runner](https://github.com/andreww-00/8Week-SQL-challenge-Solution-Writeup/tree/main/%232%20Pizza%20Runner%20)
+- [#3 Foodie Fi](https://github.com/andreww-00/8Week-SQL-challenge-Solution-Writeup/tree/main/%233%20Foodie%20Fi)
